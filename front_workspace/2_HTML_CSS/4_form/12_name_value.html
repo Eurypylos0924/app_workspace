@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+      <meta charset="utf-8">
+      <title>autofocus required placeholder / 오토포커스, 항목체크, 힌트텍스트</title>
+  </head>
+
+  <body>
+    <form>
+     ex1 <br />
+     <input type="text" name="name" value="이름을 입력하세요">
+    </form>
+
+
+    <form>
+     ex2<br />
+     <input type="text" name="name" autofocus required placeholder="이름을 입력하세요">
+    </form>
+
+    <!--
+    name은 서버에 전송되기 위해 꼭 필요한 값(필수)
+    value는 폼 필드에 기본적으로 입력을 해 주는 값(필수 & 선택)
+    name과 value는 항상 같이 다니는 것이 기본이지만 체크박스가 아닌  텍스트 박스는 예외
+    ex1의 텍스트 칸이 value로 채워짐
+
+
+    ex2 텍스트 필드에 커서키를 입력하면 이름이 지워지는 기능
+    autofocus  폼의 위치에 마우스 커서가  자동으로 표시
+    required 항목을 채우지 않으면 제출되지 않음
+    placeholder ="" 어떤 항목을 써야하는지 힌트를 주는 기능
+
+    -->
+  </body>
+</html>

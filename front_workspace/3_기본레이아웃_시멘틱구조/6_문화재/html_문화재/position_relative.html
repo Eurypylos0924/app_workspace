@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title></title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body>
+
+<style>
+.wrap {
+	width:500px;height:500px;margin:0 auto;
+	border:1px solid #CCC;
+	position:relative;
+}
+.wrap > div {width:100px;height:100px;}
+
+.testbox1 {
+	background-color:red;
+	position:absolute;
+	top:100px;left:100px;
+	z-index:1;﻿
+}
+.testbox2 {
+	background-color:blue;
+	position:absolute;
+	top:150px;left:150px;
+	z-index:100;
+}
+.testbox3 {
+	background-color:yellow;
+	position:absolute;
+	top:200px;left:200px;
+	z-index:3;
+}
+</style>
+
+<div class="wrap">
+	<div class="testbox1">&nbsp;</div>
+	<div class="testbox2">&nbsp;</div>
+	<div class="testbox3">&nbsp;</div>
+</div>﻿
+
+</body>
+</html>

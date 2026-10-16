@@ -1,0 +1,16 @@
+# 강사 교재 문서 (저작권상 공개 저장소에 올리지 않음)
+*.pdf
+*.docx
+*.doc
+*.hwp
+*.pptx
+*.zip
+
+# 환경/비밀 정보
+.env
+.env.*
+
+# OS/에디터
+.DS_Store
+Thumbs.db
+.vscode/

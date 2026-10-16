@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Page Title</title>
+    <style>
+      * {margin:0; box-sizing:border-box;}
+
+      header {width:500px; height:100px; border:3px solid gold; float:left;}
+
+      /*
+      float:left   왼쪽 정렬
+      float:right  오른쪽 정렬
+      margin: 0 auto  중앙 정렬
+
+      float: left;로 인해 요소가 떠 있는 상태가 되면, 다음 요소들이 그 공간을 인식하지 못해 겹칠 수 있음.
+      clear: both;를 사용하면 떠 있는 요소들 아래로 내려가므로, 중앙 정렬(margin: 0 auto;)이 정상 작동함.
+      즉, clear: both;를 사용하여 float 요소와 겹치지 않도록 정리함.
+
+      clear: both;**를 쓰는 이유는 바로 float로 인해 흐트러진 정렬을 다시 정상으로 돌리기 위해서이다.
+      clear: both;를 사용하면 왼쪽(float: left;)과 오른쪽(float: right;) 모두 영향을 받지 않고 아래로 내려감.
+
+      즉, 이전의 float 정렬 상태를 없애고, 정상적인 블록 흐름으로 돌아오게 만드는 것
+      */
+
+      #slider {width:500px; height:100px; border:3px solid tomato; margin:0 auto; clear:both;}
+      main {width:500px; height:100px; border:3px solid green; float:left; }
+      footer {width:500px; height:100px; border:3px solid blue; float:left;}
+
+    </style>
+  </head>
+  <body>
+
+    <header></header>
+
+    <div id="slider"></div>
+
+    <main></main>
+
+
+
+
+
+    <footer></footer>
+
+
+
+
+
+  </body>
+</html>
