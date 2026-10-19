@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js026_Number.html</title>
+  </head>
+  <body>
+    <script>
+      let data = 10;
+      let fData = Number(data);
+      let nObj = new Number(data);
+      console.log(`data=${typeof data}`); //data=number
+      console.log(`fData=${typeof fData}`); //fData=number
+      console.log(`nObj=${typeof nObj}`); //nObj=object
+
+      console.log(typeof nObj.toString()); //string
+      console.log(typeof data.toString()); //string
+
+      console.log(typeof Number(nObj)); //number
+      console.log(nObj + data); //20
+      console.log(typeof (nObj + data)); //number
+
+      let val = "10.0";
+      console.log(val + val); //10.010.0
+
+      let val2 = "A";
+      console.log(val2 + val2); //AA
+
+      let val3 = "10A";
+      console.log(val3 + val3); //10A10A
+
+      //Number(), parseInt()
+      console.log(Number(val) + Number(val)); //20
+      console.log(Number(val2) + Number(val2)); //NaN
+      console.log(Number(val3) + Number(val3)); //NaN
+
+      console.log(parseInt(val) + parseInt(val)); //20
+      console.log(parseInt(val2) + parseInt(val2)); //NaN
+      console.log(parseInt(val3) + parseInt(val3)); //20
+    </script>
+  </body>
+</html>

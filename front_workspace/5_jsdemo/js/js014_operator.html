@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js014_operator.html</title>
+  </head>
+  <body>
+    <script>
+      /*
+     조건연산자 : 조건식 ? true : false 
+                 조건식 ? (조건식 : true1 : false1) : false
+                  회원이고 VIP이면 : 30%,  회원이고 일반이면 :20%  , 비회원 : 2%
+      */
+
+      let member = true;
+      let glade = "general";
+      let count = 1000;
+
+      let res = member ? (glade == "VIP" ? 0.3 : 0.2) : 0.02;
+      console.log(res * count);
+
+      let chk = true ? "홍길동" : 30;
+      console.log(chk); //홍길동
+    </script>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js021_for_in.html</title>
+  </head>
+  <body>
+    <script>
+      let color = ["red", "green", "blue"];
+      console.log(color[0]); //red
+      console.log(color[1]); //green
+      console.log(color[2]); //blue
+      console.log(color[3]); //undefined
+
+      //length  :  요소의 개수 리턴
+      console.log(color.length); //3
+
+      for (let index = 0; index < color.length; index++) {
+        console.log(color[index]);
+      }
+
+      //배열에 "black" 요소 추가
+      color[3] = "black";
+      console.log(color.length); //4
+      for (let index = 0; index < color.length; index++) {
+        console.log(color[index]);
+      }
+
+      //배열 1인덱스의 요소를 'white'로 업데이트
+      color[1] = "white";
+      for (let index = 0; index < color.length; index++) {
+        console.log(color[index]);
+      }
+
+      let city = ["서울", "부산", "대전"];
+      for (let idx in city) {
+        console.log(`${idx}=city[${idx}] ${city[idx]}`);
+      }
+
+      let obj = { a: 1, b: 2, c: 3 };
+      console.log(obj); //{ a: 1, b: 2, c: 3 }
+      console.log(obj.a); //1
+      console.log(obj.b); //2
+      console.log(obj.c); //3    객체.프로퍼티명
+
+      for (let prop in obj) {
+        //console.log(prop);
+        // console.log(obj[prop]);  //객체[변수]
+        console.log(`${prop}:${obj[prop]}`);
+        //console.log(`${prop}:${obj.prop}`);   //a:undefined
+      }
+    </script>
+  </body>
+</html>
