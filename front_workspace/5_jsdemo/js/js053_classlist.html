@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js053_classlist.html</title>
+    <style>
+      div#second {
+        width: 100px;
+        height: 100px;
+      }
+      .reditem {
+        background-color: red;
+      }
+
+      .blueitem {
+        background-color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="first" class="red green">sample</div>
+
+    <div id="second" class="reditem"></div>
+    <button>blue</button>
+
+    <script>
+      let divList = document.querySelector("div#first");
+      console.log(divList.classList);
+      divList.classList.add("blue");
+      console.log(divList.classList);
+      divList.classList.remove("red");
+      console.log(divList.classList);
+
+      let second = document.querySelector("div#second");
+      let btn = document.querySelector("button");
+      btn.onclick = function () {
+        if (btn.innerText == "blue") {
+          second.classList.add("blueitem");
+          second.classList.remove("reditem");
+          btn.innerText = "red";
+        } else {
+          second.classList.add("reditem");
+          second.classList.remove("blueitem");
+          btn.innerText = "blue";
+        }
+      };
+    </script>
+  </body>
+</html>

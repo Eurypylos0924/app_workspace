@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js052_clock.html</title>
+    <script src="js052_clock.js" defer></script>
+    <style>
+      .clock_box {
+        display: inline-block;
+        padding: 8px;
+        border-radius: 8px;
+        background-color: #000000;
+        color: white;
+        text-align: center;
+      }
+
+      .large_text {
+        font-size: 75px;
+      }
+
+      .small_text {
+        font-size: 20px;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      .colon {
+        font-size: 55px;
+        vertical-align: text-bottom;
+        animation: blink 1s step-start 0s infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>디지털 시계</h3>
+    <div class="clock_box">
+      <div class="time_box">
+        <span id="hours" class="large_text"></span>
+        <span class="colon">:</span>
+        <span id="minute" class="large_text"></span>
+        <span id="seconds" class="small_text"></span>
+      </div>
+
+      <div class="date_box">
+        <span id="year"></span>
+        <span>.</span>
+        <span id="month"></span>
+        <span>.</span>
+        <span id="date"></span>
+        <span id="day"></span>
+      </div>
+
+      <button>시간종료</button>
+    </div>
+  </body>
+</html>

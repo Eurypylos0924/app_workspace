@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>js035_dom.html</title>
+    <script src="js035_dom.js" defer></script>
+  </head>
+  <body>
+    <h1 id="selector" class="choice">선택자</h1>
+
+    <div>
+      <p>content1</p>
+      <p style="display: none">content2</p>
+      <p>content3</p>
+      <p style="display: none">content4</p>
+    </div>
+
+    <form name="frm">
+      <input type="text" name="fname" placeholder="이름입력" value="홍길동" />
+      <input type="text" name="fpass" placeholder="비밀번호 입력" />
+      <button onclick="return process()">click</button>
+    </form>
+  </body>
+</html>
