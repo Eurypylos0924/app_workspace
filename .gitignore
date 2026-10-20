@@ -14,3 +14,12 @@
 .DS_Store
 Thumbs.db
 .vscode/
+
+# 이미지 파일 (용량 문제로 추적하지 않음)
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.ico
+*.webp
+*.bmp
