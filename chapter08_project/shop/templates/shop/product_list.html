@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><title>상품 목록</title></head>
+<body>
+<h1>상품 목록</h1>
+<ul>
+  {% for product in products %}
+  <li>
+    <a href="{% url 'shop:product_detail' product.pk %}">
+      {{ product.name }}
+    </a>
+    | 카테고리: {{ product.category.name }}
+    | 가격: {{ product.price }}
+    | 재고: {{ product.stock }}
+  </li>
+  {% empty %}
+  <li>상품이 없습니다.</li>
+  {% endfor %}
+</ul>
+</body>
+</html>

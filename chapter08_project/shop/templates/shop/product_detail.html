@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8"><title>상품 상세</title></head>
+<body>
+<h1>{{ product.name }}</h1>
+<p>카테고리: {{ product.category.name }}</p>
+<p>가격: {{ product.price }}</p>
+<p>재고: {{ product.stock }}</p>
+<a href="{% url 'shop:product_list' %}">목록으로</a>
+</body>
+</html>

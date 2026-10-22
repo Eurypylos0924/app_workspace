@@ -1,0 +1,18 @@
+[project]
+name = "chapter03-project"
+version = "0.1.0"
+description = "제3장 JSON 파일 기반 상품 관리 CLI"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+pythonpath = ["."]
+addopts = "-ra"
+
+[dependency-groups]
+dev = [
+    "pytest>=8,<10",
+]

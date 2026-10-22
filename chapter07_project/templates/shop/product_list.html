@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7장 MySQL 상품 목록</title>
+{% load static %}
+<link rel="stylesheet" href="{% static 'shop/style.css' %}">
+</head>
+<body>
+<main class="container">
+<h1>MySQL 상품 목록</h1>
+<p>Docker MySQL의 데이터를 Django ORM으로 읽어 왔습니다.</p>
+<table>
+<thead><tr><th>상품명</th><th>가격</th><th>재고</th></tr></thead>
+<tbody>
+{% for product in products %}
+<tr><td>{{ product.name }}</td><td>{{ product.price }}</td><td>{{ product.stock }}</td></tr>
+{% empty %}
+<tr><td colspan="3">상품이 없습니다.</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</main>
+</body>
+</html>

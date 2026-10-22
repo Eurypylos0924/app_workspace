@@ -1,0 +1,40 @@
+# Python 가상환경
+.venv/
+
+# Python 실행 시 생기는 캐시
+__pycache__/
+*.py[cod]
+
+# 비밀 정보 (키, DB 비밀번호)
+.env
+.env.*
+
+# 예시 파일은 올려도 됨 (비밀번호 없음)
+!.env.example
+
+# SQLite 파일
+*.sqlite3
+*.sqlite3-journal
+
+# VS Code 설정
+.vscode/
+
+# 운영체제 파일
+.DS_Store
+Thumbs.db
+
+# Python 빌드 결과
+build/
+dist/
+*.egg-info/
+
+# 테스트/도구 캐시
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Django 수집 정적 파일, 업로드 파일
+staticfiles/
+media/

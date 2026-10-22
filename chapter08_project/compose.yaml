@@ -1,0 +1,44 @@
+# 8장 전용 MySQL 8.4 컨테이너 설정입니다.
+# 7장 컨테이너(chapter07-mysql, 포트 3307)와 이름, 포트, 데이터 저장 공간이 모두 다릅니다.
+services:
+
+  # MySQL 서버 컨테이너
+  mysql:
+    image: mysql:8.4
+
+    # 7장(chapter07-mysql)과 겹치지 않는 이름
+    container_name: chapter08-mysql
+
+    restart: unless-stopped
+
+    # MySQL 첫 실행 시 사용할 설정값 (.env 파일에서 읽음)
+    # ${변수:?메시지}: 값이 없으면 메시지를 출력하고 중단합니다.
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:?Set MYSQL_DATABASE in .env}
+      MYSQL_USER: ${MYSQL_USER:?Set MYSQL_USER in .env}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?Set MYSQL_PASSWORD in .env}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set MYSQL_ROOT_PASSWORD in .env}
+
+    ports:
+      # 내 PC의 3308 포트 -> 컨테이너 안의 3306 포트 (7장은 3307)
+      # 127.0.0.1: 내 PC에서만 접속 가능
+      - "127.0.0.1:${MYSQL_PORT:-3308}:3306"
+
+    volumes:
+      # 8장 전용 데이터 저장 공간 (7장 볼륨과 별개)
+      - mysql_data:/var/lib/mysql
+      # sql 폴더의 파일은 데이터를 처음 만들 때 한 번만 자동 실행됩니다.
+      # (pytest 가 쓰는 test_ 데이터베이스 권한을 부여합니다.)
+      - ./sql:/docker-entrypoint-initdb.d:ro
+
+    # MySQL 이 정상적으로 켜졌는지 주기적으로 확인합니다.
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_PASSWORD\" mysqladmin ping -h 127.0.0.1 -u\"$$MYSQL_USER\" --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+volumes:
+  # 8장 MySQL 데이터 저장용 볼륨
+  mysql_data:
