@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block content %}<h1>로그인</h1>
+{% if form.errors %}<p role="alert">아이디 또는 비밀번호를 확인하세요.</p>{% endif %}
+<form method="post">{% csrf_token %}{{ form.as_p }}
+<input type="hidden" name="next" value="{{ next }}"><button type="submit">로그인</button></form>{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>주문 확인</h1>
+{% for item in items %}
+  <p>{{ item.product.name }} · {{ item.quantity }}개 · {{ item.subtotal }}원</p>
+{% empty %}
+  <p>장바구니가 비어 있습니다. 상품을 먼저 담으세요.</p>
+{% endfor %}
+<p><strong>주문 예정 금액: {{ total }}원</strong></p>
+{% if items %}
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">주문 확정 (결제 없음)</button>
+</form>
+{% endif %}
+{% endblock %}

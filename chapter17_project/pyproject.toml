@@ -1,0 +1,21 @@
+[project]
+name = "chapter17-integration-testing"
+version = "0.1.0"
+description = "제17장 Django 쇼핑몰 통합 테스트 및 최종 검증"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "django==5.2.7",
+    "mysqlclient>=2.2.7,<3",
+    "python-dotenv==1.1.1",
+    "djangorestframework>=3.16,<3.17",
+]
+
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "pytest-django>=4.9,<5"]
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+pythonpath = ["."]
+addopts = "-ra"

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>주문 운영 현황</h1>
+<p>실제 결제 금액이 아닌 교육용 모의 결제 집계이다.</p>
+<section>
+  <p>전체 주문: {{ summary.total_orders }}건</p>
+  <p>취소 주문: {{ summary.cancelled_orders }}건</p>
+  <p>모의 결제 완료 합계: {{ summary.paid_amount }}원</p>
+</section>
+<h2>상태별 주문</h2>
+<ul>
+{% for row in breakdown %}<li>{{ row.status }}: {{ row.count }}건</li>
+{% empty %}<li>주문 데이터가 없다.</li>{% endfor %}
+</ul>
+<h2>최근 주문</h2>
+<table><thead><tr><th>번호</th><th>사용자</th><th>상태</th><th>금액</th></tr></thead>
+<tbody>{% for order in recent_orders %}<tr><td>{{ order.pk }}</td><td>{{ order.user.username }}</td><td>{{ order.get_status_display }}</td><td>{{ order.total_amount }}</td></tr>
+{% empty %}<tr><td colspan="4">주문 내역이 없다.</td></tr>{% endfor %}</tbody></table>
+<p><a href="{% url 'reports:orders_csv' %}">주문 CSV 다운로드</a></p>
+{% endblock %}

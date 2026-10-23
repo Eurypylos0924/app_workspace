@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>내 주문 내역</h1>
+{% for order in orders %}
+  <p><a href="{% url 'order_detail' order.pk %}">주문 #{{ order.pk }}</a> · {{ order.total_amount }}원 · {{ order.created_at }}</p>
+{% empty %}
+  <p>주문 내역이 없습니다.</p>
+{% endfor %}
+{% endblock %}

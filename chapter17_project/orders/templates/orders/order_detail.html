@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>주문 #{{ order.pk }}</h1>
+<p>주문 상태: <strong>{{ order.get_status_display }}</strong></p>
+{% if order.cancelled_at %}<p>취소 시각: {{ order.cancelled_at }}</p>{% endif %}
+{% for item in order.items.all %}
+  <p>{{ item.product_name }} · {{ item.unit_price }}원 × {{ item.quantity }} = {{ item.subtotal }}원</p>
+{% endfor %}
+<p><strong>주문 합계: {{ order.total_amount }}원</strong></p>
+{% if order.status == "pending" %}
+  <!-- 주문 상태를 바꾸는 요청에는 반드시 CSRF 토큰을 넣는다. -->
+  <form method="post" action="{% url 'order_cancel' order.pk %}">
+    {% csrf_token %}
+    <button type="submit">주문 취소</button>
+  </form>
+  {% if request.user.is_staff %}
+  <form method="post" action="{% url 'order_confirm' order.pk %}">
+    {% csrf_token %}
+    <button type="submit">관리자 주문 확인</button>
+  </form>
+  {% endif %}
+{% endif %}
+<p>실제 결제·환불은 처리하지 않는 교육용 예제이다.</p>
+
+<section aria-label="모의 결제 실습">
+<h2>모의 결제</h2>
+<p>실제 결제 서비스와 연결되지 않으며 금전 이동은 없다.</p>
+{% if order.status == 'pending' and not order.payment %}
+<form method="post" action="{% url 'order_pay' order.pk %}">{% csrf_token %}<button type="submit">모의 결제</button></form>
+{% endif %}
+{% if order.status == 'cancelled' %}
+<form method="post" action="{% url 'order_refund' order.pk %}">{% csrf_token %}<button type="submit">모의 환불 기록</button></form>
+{% endif %}
+</section>
+
+{% endblock %}

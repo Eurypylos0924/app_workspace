@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}상품 검색{% endblock %}
+{% block content %}
+<h1>상품 목록 · 검색</h1>
+<!-- GET 방식은 검색 조건을 URL에 보존하므로 공유와 뒤로 가기가 편리하다. -->
+<form method="get" action="{% url 'product_list' %}" class="search-form">
+  <label>검색어 <input name="q" value="{{ keyword }}" placeholder="상품명 또는 설명"></label>
+  <label>분류 <select name="category"><option value="">전체 분류</option>
+    {% for category in categories %}<option value="{{ category.id }}" {% if selected_category == category.id|stringformat:'s' %}selected{% endif %}>{{ category.name }}</option>{% endfor %}
+  </select></label>
+  <label>최소 가격 <input name="min_price" type="number" min="0" step="0.01" value="{{ min_price }}"></label>
+  <label>최대 가격 <input name="max_price" type="number" min="0" step="0.01" value="{{ max_price }}"></label>
+  <label>정렬 <select name="sort">
+    <option value="newest" {% if sort == 'newest' %}selected{% endif %}>최신 등록순</option>
+    <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>가격 낮은순</option>
+    <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>가격 높은순</option>
+    <option value="name" {% if sort == 'name' %}selected{% endif %}>이름순</option>
+  </select></label>
+  <button type="submit">검색</button><a href="{% url 'product_list' %}">초기화</a>
+</form>
+<p>검색 결과: {{ page_obj.paginator.count }}개</p>
+<section class="grid">
+{% for product in products %}
+  <article class="card"><small>{{ product.category.name }}</small>
+    <h2>{{ product.name }}</h2><p>{{ product.price }}원 · 재고 {{ product.stock }}개</p>
+    <a href="{% url 'product_detail' product.pk %}">상세 보기</a>
+  </article>
+{% empty %}<p>검색 조건에 해당하는 상품이 없습니다.</p>{% endfor %}
+</section>
+<!-- query_string은 Django가 URL 인코딩한 GET 파라미터이다. -->
+<nav aria-label="페이지 이동" class="pagination">
+{% if page_obj.has_previous %}<a href="?{{ query_string }}&amp;page={{ page_obj.previous_page_number }}">이전</a>{% endif %}
+<span>{{ page_obj.number }} / {{ page_obj.paginator.num_pages }} 페이지</span>
+{% if page_obj.has_next %}<a href="?{{ query_string }}&amp;page={{ page_obj.next_page_number }}">다음</a>{% endif %}
+</nav>
+{% endblock %}
