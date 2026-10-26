@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}회원 관리 | Django Shop MTV{% endblock %}
+{% block content %}
+<div class="board-wrapper">
+    <h2 class="board-heading">관리자 회원 관리</h2>
+    <div class="table-container">
+        <table class="board-table">
+            <thead>
+                <tr>
+                    <th class="col-no">아이디</th>
+                    <th>이름</th>
+                    <th>이메일</th>
+                    <th class="col-date">가입일</th>
+                    <th class="col-count">상태</th>
+                    <th class="col-count">처리</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for member in members %}
+                <tr>
+                    <td class="col-no">{{ member.username }}</td>
+                    <td>{{ member.display_name }}</td>
+                    <td>{{ member.email }}</td>
+                    <td class="col-date">{{ member.date_joined|date:'Y-m-d' }}</td>
+                    <td class="col-count">{% if member.is_active %}<span class="badge-success">허용</span>{% else %}<span class="badge-danger">제한</span>{% endif %}</td>
+                    <td class="col-count">
+                        <form method="post" action="{% url 'members:toggle_active' member.pk %}">
+                            {% csrf_token %}
+                            <button class="btn btn-small {% if member.is_active %}btn-danger{% else %}btn-primary{% endif %}" type="submit">
+                                {% if member.is_active %}제한{% else %}허용{% endif %}
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr><td colspan="6" class="empty-row">회원이 없습니다.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -2,3 +2,14 @@
 {% if form.errors %}<p role="alert">아이디 또는 비밀번호를 확인하세요.</p>{% endif %}
 <form method="post">{% csrf_token %}{{ form.as_p }}
 <input type="hidden" name="next" value="{{ next }}"><button type="submit">로그인</button></form>{% endblock %}
+
+
+<!-- 
+CSRF는 사용자가 로그인 한 상태를 악용하여 공격자가 사용자의 의도와 관계없이 서버에 요청을 보내도록 유도하는 공격이다. 
+{% csrf_token %}은 서버가 HTML을 생성할 때 다음과 같은 숨겨진 입력 요소로 변환된다.
+<input
+    type="hidden"
+    name="csrfmiddlewaretoken"
+    value="서버가_생성한_토큰"
+>
+ -->

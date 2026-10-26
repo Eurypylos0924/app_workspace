@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}게시판 | Django Shop MTV{% endblock %}
+{% block content %}
+<div class="board-wrapper">
+    <!-- 소제목: 좌측 정렬 -->
+    <h2 class="board-heading">게시판</h2>
+
+    <!-- 검색창: 중앙 정렬 -->
+    <div class="search-section">
+        <form class="search-box" method="get">
+            <input type="search" name="q" value="{{ query }}" placeholder="제목 또는 내용 검색">
+            <button type="submit">검색</button>
+        </form>
+    </div>
+
+    <!-- 게시글 테이블 -->
+    <div class="table-container">
+        <table class="board-table">
+            <thead>
+                <tr>
+                    <th class="col-no">번호</th>
+                    <th class="col-title">제목</th>
+                    <th class="col-author">작성자</th>
+                    <th class="col-count">조회수</th>
+                    <th class="col-date">작성일</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for board in page_obj %}
+                <tr>
+                    <td class="col-no">{{ board.pk }}</td>
+                    <td class="col-title">
+                        <span style="padding-left: {{ board.depth }}em;">{% if board.depth %}└ 답글 {% endif %}</span><a href="{% url 'boards:detail' board.pk %}">{{ board.title }}</a>
+                    </td>
+                    <td class="col-author">{{ board.author.display_name }} ({{ board.author.username }})</td>
+                    <td class="col-count">{{ board.read_count }}</td>
+                    <td class="col-date">{{ board.created_at|date:'Y-m-d H:i' }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="empty-row">등록된 게시글이 없습니다.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 하단 페이지네이션: 간결한 숫자 링크 -->
+    <div class="pagination-section">
+        {% if has_prev_block %}
+            <a href="?q={{ query|urlencode }}&page={{ prev_block_page }}" class="page-link">&laquo;</a>
+        {% endif %}
+
+        {% for p in custom_page_range %}
+            {% if p == page_obj.number %}
+                <span class="page-link current">{{ p }}</span>
+            {% else %}
+                <a href="?q={{ query|urlencode }}&page={{ p }}" class="page-link">{{ p }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if has_next_block %}
+            <a href="?q={{ query|urlencode }}&page={{ next_block_page }}" class="page-link">&raquo;</a>
+        {% endif %}
+    </div>
+
+    <!-- 글쓰기 버튼 (하단 우측) -->
+    {% if user.is_authenticated %}
+        <div class="bottom-actions">
+            <a href="{% url 'boards:create' %}" class="btn-write">새 글 등록</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

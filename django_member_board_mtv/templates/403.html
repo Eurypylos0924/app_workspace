@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}403 접근 권한 없음 | Django Shop MTV{% endblock %}
+{% block content %}
+<div class="board-wrapper">
+    <section class="clean-box narrow-box">
+        <h2 class="board-heading">403 - 접근 권한이 없습니다</h2>
+        <p class="confirm-msg">본인이 작성한 글만 수정할 수 있으며, 삭제는 본인 또는 관리자만 가능합니다.</p>
+        <div class="action-buttons">
+            <a class="btn btn-primary" href="{% url 'boards:list' %}">게시판으로 이동</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}회원정보 수정 | Django Shop MTV{% endblock %}
+{% block content %}
+<div class="board-wrapper">
+    <section class="clean-box narrow-box">
+        <h2 class="board-heading">회원정보 수정</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% for error in field.errors %}
+                        <div class="field-error">{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <div class="action-buttons">
+                <button type="submit" class="btn btn-primary">저장</button>
+                <a href="{% url 'members:profile' %}" class="btn btn-secondary">취소</a>
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock %}

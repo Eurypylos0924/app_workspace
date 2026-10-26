@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}홈 | Django Shop MTV{% endblock %}
+{% block content %}
+<div class="board-wrapper">
+    <div class="home-hero clean-box">
+        <h2 class="hero-title">Django Shop MTV 커뮤니티</h2>
+        <p class="hero-desc">MySQL 8.4 연동, 세션 회원 인증 및 게시판 기능이 통합된 Django MTV 프로젝트입니다.</p>
+        <div class="action-buttons">
+            <a class="btn btn-primary" href="{% url 'boards:list' %}">게시판 바로가기</a>
+            {% if not user.is_authenticated %}
+                <a class="btn btn-secondary" href="{% url 'members:signup' %}">회원가입</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <h2 class="board-heading" style="margin-top: 30px;">최근 게시글</h2>
+    <div class="table-container">
+        <table class="board-table">
+            <thead>
+                <tr>
+                    <th class="col-no">번호</th>
+                    <th class="col-title">제목</th>
+                    <th class="col-author">작성자</th>
+                    <th class="col-date">작성일</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in recent_posts %}
+                <tr>
+                    <td class="col-no">{{ post.pk }}</td>
+                    <td class="col-title">
+                        <a href="{% url 'boards:detail' post.pk %}">{{ post.title }}</a>
+                    </td>
+                    <td class="col-author">{{ post.author.display_name }} ({{ post.author.username }})</td>
+                    <td class="col-date">{{ post.created_at|date:'Y-m-d' }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="empty-row">등록된 게시글이 없습니다.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
