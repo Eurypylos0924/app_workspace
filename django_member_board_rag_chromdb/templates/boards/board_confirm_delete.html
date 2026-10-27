@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}게시글 삭제 | Django Shop MTV{% endblock %}
+{% block content %}
+<div class="board-wrapper">
+    <section class="clean-box narrow-box">
+        <h2 class="board-heading">게시글 삭제</h2>
+        <p class="confirm-msg">「<strong>{{ board.title }}</strong>」 게시글을 정말로 삭제하시겠습니까?</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="action-buttons">
+                <button type="submit" class="btn btn-danger">삭제 확정</button>
+                <a href="{% url 'boards:detail' board.pk %}" class="btn btn-secondary">취소</a>
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock %}

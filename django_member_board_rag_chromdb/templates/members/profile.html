@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}회원정보 | Django Shop MTV{% endblock %}
+{% block content %}
+<div class="board-wrapper">
+    <section class="clean-box narrow-box">
+        <h2 class="board-heading">회원정보</h2>
+        {% if member.photo %}
+            <div class="profile-photo-wrap">
+                <img class="profile-photo" src="{{ member.photo.url }}" alt="프로필 사진">
+            </div>
+        {% endif %}
+        <dl class="detail-grid">
+            <dt>아이디</dt><dd>{{ member.username }}</dd>
+            <dt>이름</dt><dd>{{ member.display_name }}</dd>
+            <dt>이메일</dt><dd>{{ member.email }}</dd>
+            <dt>성별</dt><dd>{{ member.get_gender_display }}</dd>
+            <dt>나이</dt><dd>{{ member.age|default:'-' }}</dd>
+            <dt>전화번호</dt><dd>{{ member.phone|default:'-' }}</dd>
+            <dt>가입일</dt><dd>{{ member.date_joined|date:'Y-m-d H:i' }}</dd>
+            <dt>로그인 허용</dt><dd>{{ member.login_ok }}</dd>
+            <dt>관리자 여부</dt><dd>{{ member.admin_yn }}</dd>
+        </dl>
+        <div class="action-buttons">
+            <a href="{% url 'members:profile_edit' %}" class="btn btn-primary">정보 수정</a>
+            <a href="{% url 'members:withdraw' %}" class="btn btn-danger">회원 탈퇴</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

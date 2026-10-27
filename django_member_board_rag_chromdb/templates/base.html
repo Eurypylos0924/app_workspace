@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Django Shop MTV{% endblock %}</title>
+    <!-- Google Material Symbols Outlined -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <!-- 1단 상단 바: 로고 & 인증 메뉴 -->
+    <header class="header-top-wrap">
+        <div class="header-container header-top">
+            <a href="{% url 'home' %}" class="brand-logo">Django Shop MTV</a>
+            <div class="auth-group">
+                {% if user.is_authenticated %}
+                    <form action="{% url 'members:logout' %}" method="post" class="inline-form">
+                        {% csrf_token %}
+                        <button type="submit" class="auth-btn">
+                            <span class="material-symbols-outlined icon">logout</span>
+                            <span>{{ user.display_name|default:user.username }} 로그아웃</span>
+                        </button>
+                    </form>
+                    <a href="{% url 'members:profile' %}" class="auth-btn">
+                        <span class="material-symbols-outlined icon">person</span>
+                        <span>회원수정</span>
+                    </a>
+                    <a href="{% url 'members:withdraw' %}" class="auth-btn">
+                        <span class="material-symbols-outlined icon">settings</span>
+                        <span>회원탈퇴</span>
+                    </a>
+                {% else %}
+                    <a href="{% url 'members:login' %}" class="auth-btn">
+                        <span class="material-symbols-outlined icon">login</span>
+                        <span>로그인</span>
+                    </a>
+                    <a href="{% url 'members:signup' %}" class="auth-btn">
+                        <span class="material-symbols-outlined icon">person_add</span>
+                        <span>회원가입</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- 2단 상단 바: 대메뉴 (공지사항 / 게시판) -->
+    <nav class="header-nav-wrap">
+        <div class="header-container header-nav">
+            <a href="{% url 'boards:list' %}" class="nav-title">공지사항</a>
+            <a href="{% url 'boards:list' %}" class="nav-title active">게시판</a>
+            <a href="{% url 'rag_home' %}" class="nav-title">AI 문서·게시글 검색</a>
+        </div>
+    </nav>
+
+    <!-- 본문 영역 -->
+    <main class="content-container">
+        {% if messages %}
+            <div class="message-area">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

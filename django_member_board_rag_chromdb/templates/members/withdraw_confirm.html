@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}회원 탈퇴 | Django Shop MTV{% endblock %}
+{% block content %}
+<div class="board-wrapper">
+    <section class="clean-box narrow-box">
+        <h2 class="board-heading">회원 탈퇴</h2>
+        <p class="confirm-msg">회원 계정과 회원이 작성한 게시글이 함께 삭제됩니다.<br>정말로 탈퇴하시겠습니까?</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="action-buttons">
+                <button type="submit" class="btn btn-danger">탈퇴 확정</button>
+                <a href="{% url 'members:profile' %}" class="btn btn-secondary">취소</a>
+            </div>
+        </form>
+    </section>
+</div>
+{% endblock %}

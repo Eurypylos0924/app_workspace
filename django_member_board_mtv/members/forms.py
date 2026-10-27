@@ -51,3 +51,10 @@ class ProfileUpdateForm(forms.ModelForm):
         # 모든 입력 위젯에 form-control 클래스를 부여합니다.
         for field in self.fields.values():
             field.widget.attrs.setdefault("class", "form-control")
+
+
+# ModelForm과 Model의 관계
+# models.py - Board - title, content등 데이터베이스 필드 정의
+# forms.py - BoardForm - ModelForm을 통해 입력 폼 및 유효성 검사 생성
+# views.py - 게시글 등록처리 - is_valid()로 유효성 검사 후 save()로 DB에 저장
+# 데이터베이스 - Board모델에 대응하는 테이블에 실제 데이터 저장

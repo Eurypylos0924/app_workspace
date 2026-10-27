@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}{{ board.title }} | Django Shop MTV{% endblock %}
+
+{% block content %}
+<div class="board-wrapper">
+    <!-- 소제목 -->
+    <h2 class="board-heading">게시글 상세</h2>
+
+    <article class="detail-card">
+        <!-- 1. 제목 및 메타 정보 헤더 -->
+        <div class="detail-header">
+            <h1 class="detail-title">{% if board.depth %}[답글] {% endif %}{{ board.title }}</h1>
+            {% if board.parent %}<p>부모 글: <a href="{% url 'boards:detail' board.parent.pk %}">{{ board.parent.title }}</a></p>{% endif %}
+            <div class="detail-meta">
+                <div class="meta-item">
+                    <span class="meta-label">작성자</span>
+                    <span class="meta-value">{{ board.author.display_name|default:board.author.username }} ({{ board.author.username }})</span>
+                </div>
+                <span class="meta-divider">|</span>
+                <div class="meta-item">
+                    <span class="meta-label">작성일</span>
+                    <span class="meta-value">{{ board.created_at|date:'Y-m-d H:i' }}</span>
+                </div>
+                <span class="meta-divider">|</span>
+                <div class="meta-item">
+                    <span class="meta-label">조회수</span>
+                    <span class="meta-value">{{ board.read_count }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 본문 내용 (이미지 첨부 시 미리보기 포함) -->
+        <div class="detail-body">
+            {% if board.attachment %}
+                {% with board.attachment.name|lower as fname %}
+                    {% if ".png" in fname or ".jpg" in fname or ".jpeg" in fname or ".gif" in fname or ".webp" in fname %}
+                        <div class="detail-image-wrap">
+                            <img src="{{ board.attachment.url }}" alt="{{ board.title }}">
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            {% endif %}
+            <div class="detail-text">
+                {{ board.content|linebreaks }}
+            </div>
+        </div>
+
+        <!-- 3. 첨부파일 다운로드 박스 -->
+        {% if board.attachment %}
+            <div class="detail-file-box">
+                <span class="material-symbols-outlined icon">attach_file</span>
+                <span class="file-label">첨부파일:</span>
+                <a href="{{ board.attachment.url }}" download class="file-link">{{ board.attachment.name }}</a>
+            </div>
+        {% endif %}
+
+        <!-- 4. 액션 버튼 그룹 (목록: 회색, 수정: 파란색, 삭제: 빨간색) -->
+        <div class="detail-actions">
+            <div class="left-actions">
+                <a href="{% url 'boards:list' %}" class="btn btn-secondary secondary">목록</a>
+            </div>
+            <div class="right-actions">
+                {% if user.is_authenticated and board.depth < 20 %}<a href="{% url 'boards:reply' board.pk %}" class="btn btn-primary">답글 작성</a>{% endif %}
+                {% if user.is_authenticated and user.pk == board.author_id %}
+                    <a href="{% url 'boards:update' board.pk %}" class="btn btn-primary primary">수정</a>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    {% if user.pk == board.author_id or user.is_staff or user.is_superuser %}
+                        <a href="{% url 'boards:delete' board.pk %}" class="btn btn-danger danger">삭제</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </article>
+</div>
+{% endblock %}
