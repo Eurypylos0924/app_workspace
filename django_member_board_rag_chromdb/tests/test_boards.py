@@ -53,7 +53,6 @@ def test_detail_increases_read_count(client, board):
     assert board.read_count == before + 1
 
 # 업로드한 파일이 저장되고 게시글 삭제 시 실제 파일도 제거되는지 확인한다.
-@pytest.mark.django_db(transaction=True)
 def test_attachment_upload_and_delete(logged_in_client, tmp_path):
     with override_settings(MEDIA_ROOT=tmp_path):
         upload = SimpleUploadedFile("sample.txt", b"attachment test", content_type="text/plain")

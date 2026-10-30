@@ -6,7 +6,7 @@ MySQL 8.4 Docker 컨테이너와 uv, Python 3.12 기반의 Django 회원/게시�
 - **Package Manager**: `uv`
 - **IDE**: VS Code (설정 파일 `.vscode/` 포함)
 - **Python**: 3.12+
-- **Database**: Docker MySQL 8.4 (포트 `3309`)
+- **Database**: Docker MySQL 8.4 (포트 `3310`)
 
 ## 2. 데모 계정 정보
 | 구분 | 아이디 | 비밀번호 | 권한 |
@@ -21,7 +21,7 @@ MySQL 8.4 Docker 컨테이너와 uv, Python 3.12 기반의 Django 회원/게시�
 ```bash
 docker compose up -d
 ```
-> `compose.yaml`을 통해 `shopdb`가 생성되며, Windows 호스트의 `3308` 포트로 연결됩니다.
+> `compose.yaml`을 통해 `shopdb`가 생성되며, Windows 호스트의 `3310` 포트로 연결됩니다.
 
 ### 2) uv 환경 구축 및 의존성 동기화
 ```bash

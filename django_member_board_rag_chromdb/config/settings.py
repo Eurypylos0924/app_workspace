@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     "members",
     # 게시글 CRUD 및 파일 첨부 기능을 제공하는 게시판 앱입니다.
     "boards",
+    
+    # rag
     "assistant_app",
 ]
 
@@ -104,7 +106,7 @@ DATABASES = {
         "USER": os.getenv("MYSQL_USER") or os.getenv("DB_USER", "shopuser"),
         "PASSWORD": os.getenv("MYSQL_PASSWORD") or os.getenv("DB_PASSWORD", "changeapp1234"),
         "HOST": os.getenv("MYSQL_HOST") or os.getenv("DB_HOST", "127.0.0.1"),
-        "PORT": os.getenv("MYSQL_PORT") or os.getenv("DB_PORT", "3308"),
+        "PORT": os.getenv("MYSQL_PORT") or os.getenv("DB_PORT", "3310"),
         "OPTIONS": {
             "charset": "utf8mb4",
         },
@@ -161,11 +163,12 @@ USE_I18N = True
 USE_TZ = True
 
 # /static/ URL이 정적 파일을 가리키도록 설정합니다.
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 # 프로젝트 공통 static 디렉터리를 추가합니다.
 STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 # 업로드한 프로필 사진과 게시글 첨부파일의 URL 접두사를 지정합니다.
-MEDIA_URL = "media/"
+MEDIA_URL = "/media/"
 # 업로드 파일을 실제 저장할 디렉터리를 지정합니다.
 MEDIA_ROOT = BASE_DIR / "media"
 # AutoField보다 큰 정수형 기본 PK 타입을 사용합니다.
@@ -174,3 +177,52 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # PDF 및 게시글 벡터 색인 저장 경로
 DATA_DIR = BASE_DIR / "data"
 CHROMA_DIR = BASE_DIR / "chroma_store"
+
+# AWS HTTPS reverse proxy settings
+CSRF_TRUSTED_ORIGINS = [v.strip() for v in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",") if v.strip()]
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_SSL_REDIRECT = os.getenv("DJANGO_SECURE_SSL_REDIRECT", "False").lower() == "true"
+SESSION_COOKIE_SECURE = os.getenv("DJANGO_SESSION_COOKIE_SECURE", "False").lower() == "true"
+CSRF_COOKIE_SECURE = os.getenv("DJANGO_CSRF_COOKIE_SECURE", "False").lower() == "true"
+
+
+import os
+
+# 개발환경과 운영환경 구분
+DEBUG = os.getenv(
+    "DJANGO_DEBUG", "False"
+).lower() == "true"
+
+# 운영환경에서만 보안 설정 적용
+if not DEBUG:
+    # 	HTTP 요청을 HTTPS로 전환
+    SECURE_SSL_REDIRECT = (
+        os.getenv("DJANGO_SECURE_SSL_REDIRECT", "False")
+        .lower() == "true"
+    )
+
+    # 세션 쿠키를 HTTPS로만 전
+    SESSION_COOKIE_SECURE = (
+        os.getenv("DJANGO_SESSION_COOKIE_SECURE", "False")
+        .lower() == "true"
+    )
+
+   # CSRF 쿠키를 HTTPS로만 전송
+    CSRF_COOKIE_SECURE = (
+        os.getenv("DJANGO_CSRF_COOKIE_SECURE", "False")
+        .lower() == "true"
+    )
+
+    # 프록시가 전달한 HTTPS 정보 인식
+    # 신뢰할 수 있는 프록시에서 HTTPS를 종료할 때만 사용한다.
+    SECURE_PROXY_SSL_HEADER = (
+        "HTTP_X_FORWARDED_PROTO",
+        "https",
+    )
+
+    # 브라우저에 HTTPS 사용 정책 전달
+    SECURE_HSTS_SECONDS = int(
+        os.getenv("DJANGO_SECURE_HSTS_SECONDS", "0")
+    )
+
+    

@@ -35,17 +35,22 @@ def chat(request):
         if not request.session.session_key:
             request.session.create()
         sid = request.session.session_key
+        # 현재 세션의 최근 대화 6개를 조회해서 오래된 메시지부터 최신 메시지순으로 재정렬
         history = list(ChatMessage.objects.filter(session_key=sid).order_by("-id")[:6].values("role", "content"))[::-1]
         result = answer(message.strip(), history)
+
+        # 질문과 답변을 세션에 저장
         ChatMessage.objects.create(session_key=sid, role="user", content=message.strip())
         ChatMessage.objects.create(session_key=sid, role="assistant", content=result["answer"], agent=result["agent"])
         # 원본 answer는 기존 API 호환성을 위해 유지한다.
         response_data = dict(result)
+        # render_markdown은 답변은 HTML 형식으로 변환하고, readable_source()는 출처명을 화면에 표시하기 적절한 문자열로 정리한다.
         response_data["answer_html"] = render_markdown(result["answer"])
         response_data["sources"] = [
             {**source, "display_source": readable_source(source.get("source", ""))}
             for source in result.get("sources", [])
         ]
+        # 클라이언트에 JSOn형태로 응답함
         return JsonResponse(response_data)
     except Exception:
         logger.exception("질문 처리 실패: message=%r", message[:100])

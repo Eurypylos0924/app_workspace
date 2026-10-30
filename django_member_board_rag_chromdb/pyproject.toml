@@ -15,8 +15,8 @@ dependencies = [
     "pypdf>=5,<7",
     "openai>=1.100,<3",
     "Markdown>=3.7,<4",
-    "bleach>=6,<7"
-   
+    "bleach>=6,<7",
+    "gunicorn>=23,<24",
 ]
 
 

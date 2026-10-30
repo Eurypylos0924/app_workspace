@@ -3,6 +3,7 @@
 from django.conf import settings
 # ORM 필드 및 모델 기반 클래스를 사용하기 위해 models를 가져옵니다.
 from django.db import models
+import os
 
 
 class Board(models.Model):
@@ -55,3 +56,9 @@ class Board(models.Model):
         """삭제 권한은 작성자 본인 또는 관리자에게 허용합니다."""
         # 작성자 본인이거나 staff/superuser 관리자이면 삭제할 수 있습니다.
         return user.is_authenticated and (self.author_id == user.id or user.is_staff or user.is_superuser)
+
+    def delete(self, *args, **kwargs):
+        """게시글이 삭제될 때 연결된 실제 첨부파일을 디스크에서 함께 삭제합니다."""
+        if self.attachment and os.path.isfile(self.attachment.path):
+            os.remove(self.attachment.path)
+        super().delete(*args, **kwargs)

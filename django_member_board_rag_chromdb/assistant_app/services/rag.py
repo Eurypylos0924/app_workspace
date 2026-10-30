@@ -33,20 +33,17 @@ COLLECTION_SUFFIX = "_openai3small"
 # 2. OpenAI 임베딩 함수
 # --------------------------------------------------
 
+# functools 모듈에서 제공하는 함수 실행 결과를 캐시에 저장하여 재사용하는 데코레이터이다.
+# 동일한 인자로 함수를 다시 호출하면 함수 내부 코드를 재실행하지 않고 이전에 저장한 결과를 반환한다.
 @lru_cache(maxsize=1)
 def get_embedding_function():
-    """OpenAI 임베딩 함수를 생성하고 재사용한다."""
-
-    # 환경변수에 등록된 API 키를 확인한다.
     api_key = os.getenv("OPENAI_API_KEY")
 
     if not api_key:
         raise RuntimeError(
-            "OPENAI_API_KEY가 설정되지 않았다. "
-            "프로젝트 루트의 .env 파일을 확인해야 한다."
+            "OPENAI_API_KEY 설정이 필요하다."
         )
 
-    # API 키 자체가 아닌 환경변수 이름을 전달한다.
     return OpenAIEmbeddingFunction(
         api_key_env_var="OPENAI_API_KEY",
         model_name=MODEL,
@@ -66,18 +63,21 @@ def client():
 
     # 디렉터리가 없으면 생성한다.
     chroma_dir.mkdir(
-        parents=True,
-        exist_ok=True,
+        parents=True,  # 부모 디렉토리가 없으면 함께 생성한다.
+        exist_ok=True, # 디렉토리가 이미 존재해도 오류를 발생시키지 않는다.
     )
 
+    # 생성한 ChromaDB  클라이언트 객체를 반환한다.
     return chromadb.PersistentClient(
-        path=str(chroma_dir)
+        path=str(chroma_dir)  # 저장 디렉토리 경로를 문자열로 전달한다. 
     )
 
 
 # --------------------------------------------------
 # 4. ChromaDB 컬렉션
 # --------------------------------------------------
+# Mysql :    Database,  Table     , Row   ,  Column  ,                         SELECT, INSERT, UPDATE,  DELETE  , WHERE
+# ChromaDB : Database,  Collection, Record,  ID/Document/ Metadata/ Embedding, get(),  add(),  update(), delete(), query()
 
 def collection(name="policy_documents"):
     """임베딩 모델별 컬렉션을 생성하거나 가져온다."""
@@ -91,7 +91,11 @@ def collection(name="policy_documents"):
         embedding_function=get_embedding_function(),
 
         # 코사인 거리 기반 검색
+        # ChromeDB 컬렉션에서 임베딩 벡터 간의 거리를 계산할때 코사인거리를 사용하도록 설정한다.
         metadata={
+            # hnsw: Hierarchical Nagigables Small World의 약자로 , 빠른 근사 최근접 이웃검색을 위한 인덱스 알고리즘
+            # space: 벡터 간 거리 계산 방식
+            # cosine : 코사인 거리 사용
             "hnsw:space": "cosine",
         },
     )
@@ -183,6 +187,7 @@ def index_pdfs():
             existing["metadatas"] or []
         )
         if meta
+        and meta.get("type", "pdf") == "pdf"
         and meta.get("source") not in current_sources
     ]
 
@@ -220,6 +225,7 @@ def index_pdfs():
                 docs.append(chunk)
 
                 metas.append({
+                    "type": "pdf",
                     "source": pdf.name,
                     "page": page_no,
                     "chunk": chunk_no,

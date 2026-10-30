@@ -10,4 +10,7 @@ class BoardsConfig(AppConfig):
     name = "boards"
 
     def ready(self):
-        from . import signals  # noqa: F401
+        import boards.signals # noqa: F401
+
+
+  
